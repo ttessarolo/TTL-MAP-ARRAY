@@ -3,25 +3,25 @@ import { expect } from "chai";
 import TTLMapArray from "../index.js";
 
 describe("TTLMapArray", function () {
-  it("dovrebbe aggiungere e recuperare un elemento con push/get", function () {
+  it("should add and retrieve an element with push/get", function () {
     const arr = new TTLMapArray({});
     const key = arr.push("valore");
     expect(arr.get(key)).to.equal("valore");
   });
 
-  it("dovrebbe restituire null per chiavi inesistenti", function () {
+  it("should return null for non-existent keys", function () {
     const arr = new TTLMapArray({});
     expect(arr.get("inesistente")).to.be.null;
   });
 
-  it("dovrebbe eliminare un elemento con delete", function () {
+  it("should delete an element with delete", function () {
     const arr = new TTLMapArray({});
     const key = arr.push("valore");
     arr.delete(key);
     expect(arr.get(key)).to.be.null;
   });
 
-  it("dovrebbe verificare la presenza di una chiave con has", function () {
+  it("should check the presence of a key with has", function () {
     const arr = new TTLMapArray({});
     const key = arr.push("valore");
     expect(arr.has(key)).to.be.true;
@@ -29,7 +29,7 @@ describe("TTLMapArray", function () {
     expect(arr.has(key)).to.be.false;
   });
 
-  it("dovrebbe restituire il valore in una posizione con at", function () {
+  it("should return the value at a position with at", function () {
     const arr = new TTLMapArray({});
     arr.push("a");
     arr.push("b");
@@ -37,7 +37,7 @@ describe("TTLMapArray", function () {
     expect(arr.at(2)).to.be.null;
   });
 
-  it("dovrebbe iterare con forEach e map", function () {
+  it("should iterate with forEach and map", function () {
     const arr = new TTLMapArray({});
     arr.push("a");
     arr.push("b");
@@ -48,7 +48,7 @@ describe("TTLMapArray", function () {
     expect(upper).to.deep.equal(["A", "B"]);
   });
 
-  it("dovrebbe restituire values, keys, entries", function () {
+  it("should return values, keys, entries", function () {
     const arr = new TTLMapArray({});
     const k1 = arr.push("a");
     const k2 = arr.push("b");
@@ -60,7 +60,7 @@ describe("TTLMapArray", function () {
     ]);
   });
 
-  it("dovrebbe svuotare la struttura con clear", function () {
+  it("should clear the structure with clear", function () {
     const arr = new TTLMapArray({});
     arr.push("a");
     arr.push("b");
@@ -69,7 +69,7 @@ describe("TTLMapArray", function () {
     expect(arr.size).to.equal(0);
   });
 
-  it("dovrebbe restituire first, last, next", function () {
+  it("should return first, last, next", function () {
     const arr = new TTLMapArray({});
     arr.push("a");
     arr.push("b");
@@ -78,7 +78,7 @@ describe("TTLMapArray", function () {
     expect(arr.next()).to.equal("a");
   });
 
-  it("dovrebbe rimuovere e restituire il primo elemento con shift", function () {
+  it("should remove and return the first element with shift", function () {
     const arr = new TTLMapArray({});
     arr.push("a");
     arr.push("b");
@@ -86,7 +86,7 @@ describe("TTLMapArray", function () {
     expect(arr.first()).to.equal("b");
   });
 
-  it("dovrebbe rimuovere e restituire l’ultimo elemento con pop", function () {
+  it("should remove and return the last element with pop", function () {
     const arr = new TTLMapArray({});
     arr.push("a");
     arr.push("b");
@@ -94,7 +94,7 @@ describe("TTLMapArray", function () {
     expect(arr.last()).to.equal("a");
   });
 
-  it("dovrebbe scadere un elemento dopo il TTL", function (done) {
+  it("should expire an element after TTL", function (done) {
     let expired = false;
     const arr = new TTLMapArray({
       ttl: 50,
@@ -110,7 +110,7 @@ describe("TTLMapArray", function () {
     }, 70);
   });
 
-  it("dovrebbe usare TTL e onExpire personalizzati su set", function (done) {
+  it("should use custom TTL and onExpire on set", function (done) {
     let expired = false;
     const arr = new TTLMapArray({});
     arr.set("k", "v", {
@@ -126,7 +126,7 @@ describe("TTLMapArray", function () {
     }, 50);
   });
 
-  it("dovrebbe essere iterabile con for...of", function () {
+  it("should be iterable with for...of", function () {
     const arr = new TTLMapArray({});
     const k1 = arr.push("a");
     const k2 = arr.push("b");
@@ -140,7 +140,7 @@ describe("TTLMapArray", function () {
     ]);
   });
 
-  it("dovrebbe supportare lo spread operator", function () {
+  it("should support the spread operator", function () {
     const arr = new TTLMapArray({});
     const k1 = arr.push("a");
     const k2 = arr.push("b");
@@ -151,7 +151,7 @@ describe("TTLMapArray", function () {
     ]);
   });
 
-  it("dovrebbe avere le proprietà length e size come Array e Map", function () {
+  it("should have length and size properties like Array and Map", function () {
     const arr = new TTLMapArray({});
     arr.push("a");
     arr.push("b");
@@ -159,7 +159,7 @@ describe("TTLMapArray", function () {
     expect(arr.size).to.equal(2);
   });
 
-  it("dovrebbe supportare concat come Array", function () {
+  it("should support concat like Array", function () {
     const arr1 = new TTLMapArray({});
     const arr2 = new TTLMapArray({});
     const k1 = arr1.push("a");
@@ -169,7 +169,7 @@ describe("TTLMapArray", function () {
     expect(arr3.values()).to.deep.equal(["a", "b"]);
   });
 
-  it("dovrebbe supportare slice come Array", function () {
+  it("should support slice like Array", function () {
     const arr = new TTLMapArray({});
     arr.push("a");
     arr.push("b");
@@ -178,7 +178,7 @@ describe("TTLMapArray", function () {
     expect(sliced.values()).to.deep.equal(["b", "c"]);
   });
 
-  it("dovrebbe supportare includes, indexOf, find, findIndex, some, every, filter, reduce", function () {
+  it("should support includes, indexOf, find, findIndex, some, every, filter, reduce", function () {
     const arr = new TTLMapArray({});
     arr.push(1);
     arr.push(2);
@@ -193,7 +193,7 @@ describe("TTLMapArray", function () {
     expect(arr.reduce((acc, v) => acc + v, 0)).to.equal(6);
   });
 
-  it("dovrebbe supportare toString e toLocaleString come Map e Array", function () {
+  it("should support toString and toLocaleString like Map and Array", function () {
     const arr = new TTLMapArray({});
     arr.push("a");
     arr.push("b");
@@ -222,5 +222,29 @@ describe("TTLMapArray", function () {
     const k = new TTLMapArray();
     k.set(1, { a: 1 });
     expect(k[0]).to.deep.equal({ a: 1 });
+  });
+
+  it("should allow assignment via array index notation", function () {
+    const k = new TTLMapArray();
+    k[3] = "hello";
+    expect(k[3]).to.equal("hello");
+    expect(k.length).to.equal(4);
+    expect(k[0]).to.be.null;
+    expect(k[1]).to.be.null;
+    expect(k[2]).to.be.null;
+  });
+
+  it("should clear timeout when overwriting an element by index", function (done) {
+    const k = new TTLMapArray();
+    k.push("a", {
+      ttl: 50,
+      onExpire: () => done(new Error("Should not expire"))
+    });
+    // Overwrite the first element before TTL expires
+    k[0] = "b";
+    setTimeout(() => {
+      expect(k[0]).to.equal("b");
+      done();
+    }, 70);
   });
 });

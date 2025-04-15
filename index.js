@@ -15,7 +15,6 @@ class TTLMapArray {
   }
 
   push(value, options = {}) {
-    if (!value) return;
     const key = randomUUID();
     this.set(key, value, options);
     return key;
@@ -24,10 +23,9 @@ class TTLMapArray {
   set(key, value, options = {}) {
     options = options || {};
     const { ttl, onExpire } = options;
-    if (!key || value === undefined) return;
+    if (!key) return;
 
     let timeout = null;
-
     if (ttl || this.ttl) {
       timeout = setTimeout(() => {
         const doExpire = onExpire || this.onExpire;
@@ -35,7 +33,6 @@ class TTLMapArray {
         this.delete(key);
       }, ttl || this.ttl);
     }
-
     this.queue.push({ key, value, timeout });
   }
 
@@ -147,17 +144,17 @@ class TTLMapArray {
     };
   }
 
-  // Proprietà length (come Array)
+  // Property length (like Array)
   get length() {
     return this.queue.length;
   }
 
-  // Proprietà size (come Map)
+  // Property size (like Map)
   get size() {
     return this.queue.length;
   }
 
-  // Metodi Array-like
+  // Array-like methods
   concat(...arrays) {
     const result = new TTLMapArray({ ttl: this.ttl, onExpire: this.onExpire });
     for (const [key, value] of this) {
@@ -241,7 +238,7 @@ class TTLMapArray {
   }
 }
 
-// Proxy per accesso tipo array (es: arr[0])
+// Proxy for array-like access (e.g., arr[0])
 function createTTLMapArrayProxy(args) {
   const instance = new TTLMapArray(args || {});
   return new Proxy(instance, {
@@ -250,6 +247,26 @@ function createTTLMapArrayProxy(args) {
         return target.at(Number(prop));
       }
       return Reflect.get(target, prop, receiver);
+    },
+    set(target, prop, value, receiver) {
+      if (typeof prop === "string" && /^\d+$/.test(prop)) {
+        const idx = Number(prop);
+        // Fill missing positions with null
+        while (target.queue.length < idx) {
+          target.push(null);
+        }
+        if (idx < target.queue.length) {
+          // Replace the existing element and clear the timeout
+          const old = target.queue[idx];
+          if (old && old.timeout) clearTimeout(old.timeout);
+          const key = old ? old.key : randomUUID();
+          target.queue[idx] = { key, value };
+        } else {
+          target.push(value);
+        }
+        return true;
+      }
+      return Reflect.set(target, prop, value, receiver);
     }
   });
 }

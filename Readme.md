@@ -94,9 +94,9 @@ arr.set("foo", "bar");
 // Global expire: key='foo', value='bar'
 ```
 
-## Array-like Access with [index]
+## Array-like Get and Set with [index]
 
-TTLMapArray supports direct access to its elements using the array index notation, just like a native JavaScript array:
+TTLMapArray supports direct access to its elements using the array index notation, just like a native JavaScript array. You can both read and assign values by index:
 
 ```js
 const arr = new TTLMapArray();
@@ -108,6 +108,18 @@ console.log(arr[0]); // "alpha"
 console.log(arr[1]); // "beta"
 console.log(arr[2]); // "gamma"
 console.log(arr[3]); // null (out of bounds)
+
+// You can also assign values by index:
+arr[3] = "hello";
+console.log(arr[3]); // "hello"
+console.log(arr.length); // 4
+console.log(arr[0]); // "alpha"
+
+// If you assign to an index greater than the current length, missing positions are filled with null:
+arr[6] = "world";
+console.log(arr[4]); // null
+console.log(arr[5]); // null
+console.log(arr[6]); // "world"
 ```
 
 You can also insert an element as a Map and retrieve it as an Array:
