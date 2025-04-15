@@ -16,6 +16,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ttessarolo/ttl-map-array.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ttessarolo/ttl-map-array/issues"
+  },
+  "homepage": "https://github.com/ttessarolo/ttl-map-array#readme",
   "devDependencies": {
     "chai": "^5.2.0",
     "mocha": "^11.1.0",
