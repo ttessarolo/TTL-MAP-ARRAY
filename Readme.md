@@ -12,8 +12,6 @@
 
 ## Installation
 
-Copy `index.js` into your project and import the class:
-
 ```js
 import TTLMapArray from "@ttessarolo/ttl-map-array";
 ```
