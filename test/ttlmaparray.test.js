@@ -200,4 +200,27 @@ describe("TTLMapArray", function () {
     expect(arr.toString()).to.be.a("string");
     expect(arr.toLocaleString()).to.be.a("string");
   });
+
+  it("should allow access via array notation [index]", function () {
+    const arr = new TTLMapArray();
+    arr.push("alpha");
+    arr.push("beta");
+    arr.push("gamma");
+    expect(arr[0]).to.equal("alpha");
+    expect(arr[1]).to.equal("beta");
+    expect(arr[2]).to.equal("gamma");
+    expect(arr[3]).to.be.null;
+  });
+
+  it("should allow push and array access interchangeably", function () {
+    const k = new TTLMapArray();
+    k.push("ok");
+    expect(k[0]).to.equal("ok");
+  });
+
+  it("should allow set as Map and access as Array", function () {
+    const k = new TTLMapArray();
+    k.set(1, { a: 1 });
+    expect(k[0]).to.deep.equal({ a: 1 });
+  });
 });

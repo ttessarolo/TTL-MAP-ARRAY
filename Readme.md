@@ -94,6 +94,22 @@ arr.set("foo", "bar");
 // Global expire: key='foo', value='bar'
 ```
 
+## Array-like Access with [index]
+
+TTLMapArray supports direct access to its elements using the array index notation, just like a native JavaScript array:
+
+```js
+const arr = new TTLMapArray();
+arr.push("alpha");
+arr.push("beta");
+arr.push("gamma");
+
+console.log(arr[0]); // "alpha"
+console.log(arr[1]); // "beta"
+console.log(arr[2]); // "gamma"
+console.log(arr[3]); // null (out of bounds)
+```
+
 ## APIs compatible with Array and Map
 
 TTLMapArray implements many of the native Array and Map APIs, including:

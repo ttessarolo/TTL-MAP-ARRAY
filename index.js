@@ -241,4 +241,17 @@ class TTLMapArray {
   }
 }
 
-export default TTLMapArray;
+// Proxy per accesso tipo array (es: arr[0])
+function createTTLMapArrayProxy(args) {
+  const instance = new TTLMapArray(args || {});
+  return new Proxy(instance, {
+    get(target, prop, receiver) {
+      if (typeof prop === "string" && /^\d+$/.test(prop)) {
+        return target.at(Number(prop));
+      }
+      return Reflect.get(target, prop, receiver);
+    }
+  });
+}
+
+export default createTTLMapArrayProxy;
