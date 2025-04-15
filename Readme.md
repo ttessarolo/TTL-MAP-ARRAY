@@ -90,9 +90,53 @@ arr.set("foo", "bar");
 // Global expire: key='foo', value='bar'
 ```
 
+## APIs compatible with Array and Map
+
+TTLMapArray implements many of the native Array and Map APIs, including:
+
+- Properties: `length`, `size`
+- Methods: `concat`, `slice`, `includes`, `indexOf`, `find`, `findIndex`, `some`, `every`, `filter`, `reduce`, `toString`, `toLocaleString`
+- Iterability: supports `for...of` and the spread operator `[...obj]`
+
+## Advanced Example: Array and Map Compatibility
+
+```js
+const arr = new TTLMapArray({});
+arr.push("a");
+arr.push("b");
+arr.push("c");
+
+console.log(arr.length); // 3
+console.log(arr.size); // 3
+
+// Array-like methods
+const arr2 = arr.slice(1, 3);
+console.log(arr2.values()); // ["b", "c"]
+console.log(arr.includes("b")); // true
+console.log(arr.indexOf("c")); // 2
+console.log(arr.find((v) => v === "b")); // "b"
+console.log(arr.findIndex((v) => v === "c")); // 2
+console.log(arr.some((v) => v === "a")); // true
+console.log(arr.every((v) => typeof v === "string")); // true
+console.log(arr.filter((v) => v !== "a").values()); // ["b", "c"]
+console.log(arr.reduce((acc, v) => acc + v, "")); // "abc"
+
+// Map-like methods
+arr.set("customKey", "z");
+console.log(arr.get("customKey")); // "z"
+
+// Iterability
+for (const [key, value] of arr) {
+  console.log(key, value);
+}
+
+const spread = [...arr];
+console.log(spread); // array of [key, value]
+```
+
 ## API Reference
 
-| Method                     | Description                                                                            |
+| Method/Property            | Description                                                                            |
 | -------------------------- | -------------------------------------------------------------------------------------- |
 | `push(value, options)`     | Adds a value with optional TTL, returns generated key.                                 |
 | `set(key, value, options)` | Sets a value for a key with optional TTL and onExpire callback.                        |
@@ -113,6 +157,21 @@ arr.set("foo", "bar");
 | `first()`                  | Returns the first value, or `null` if empty.                                           |
 | `last()`                   | Returns the last value, or `null` if empty.                                            |
 | `next()`                   | Alias for `first()`.                                                                   |
+| `length`                   | Number of elements (like Array).                                                       |
+| `size`                     | Number of elements (like Map).                                                         |
+| `concat(...arrays)`        | Returns a new TTLMapArray by concatenating other arrays/maps.                          |
+| `slice(start, end)`        | Returns a partial copy as a new TTLMapArray.                                           |
+| `includes(value)`          | Checks if a value is present.                                                          |
+| `indexOf(value)`           | Returns the index of the value, or -1 if not found.                                    |
+| `find(cb)`                 | Returns the first value that satisfies the callback.                                   |
+| `findIndex(cb)`            | Returns the index of the first value that satisfies the callback.                      |
+| `some(cb)`                 | Returns true if at least one value satisfies the callback.                             |
+| `every(cb)`                | Returns true if all values satisfy the callback.                                       |
+| `filter(cb)`               | Returns a new filtered TTLMapArray.                                                    |
+| `reduce(cb, init)`         | Reduces the values to a single result.                                                 |
+| `toString()`               | Returns a string representation of the structure.                                      |
+| `toLocaleString()`         | As above, but localized.                                                               |
+| `[Symbol.iterator]`        | Allows iteration with for...of and spread operator.                                    |
 
 ## License
 
@@ -122,10 +181,10 @@ Copyright (c) 2025 Tommaso Tessarolo
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+in the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
