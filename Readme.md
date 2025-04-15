@@ -110,6 +110,14 @@ console.log(arr[2]); // "gamma"
 console.log(arr[3]); // null (out of bounds)
 ```
 
+You can also insert an element as a Map and retrieve it as an Array:
+
+```js
+const k = new TTLMapArray();
+k.set(1, { a: 1 });
+console.log(k[0]); // { a: 1 }
+```
+
 ## APIs compatible with Array and Map
 
 TTLMapArray implements many of the native Array and Map APIs, including:
