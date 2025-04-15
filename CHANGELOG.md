@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.9](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.0.8%0Dv1.0.9) (2025-04-15)
+
+
+### Docs
+
+* updated the docs ([2dbbc0e](https://github.com/ttessarolo/ttl-map-array/commits/2dbbc0e619c33c171e1272cbbb16b559679d1aa2))
+
 ### [1.0.8](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.0.7%0Dv1.0.8) (2025-04-15)
 
 
