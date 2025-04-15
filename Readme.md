@@ -10,7 +10,13 @@
 - Optional expiration callback (`onExpire`)
 - Utility methods for iteration, mapping, and more
 
-## Installation
+## Installation & Import
+
+```
+npm i @ttessarolo/ttl-map-array
+```
+
+Import the library as an ESM module:
 
 ```js
 import TTLMapArray from "@ttessarolo/ttl-map-array";
