@@ -98,6 +98,17 @@ class TTLMapArray {
     return this.queue[index].value;
   }
 
+  extract(index) {
+    if (typeof index !== "number" || index < 0 || index >= this.queue.length)
+      return null;
+    const item = this.queue.splice(index, 1)[0];
+    if (item) {
+      clearTimeout(item.timeout);
+      return item.value;
+    }
+    return null;
+  }
+
   forEach(callback) {
     this.queue.forEach(({ value, key }) => {
       callback(value, key, this.queue);

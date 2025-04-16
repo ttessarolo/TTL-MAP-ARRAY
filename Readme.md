@@ -200,44 +200,64 @@ const spread = [...arr];
 console.log(spread); // array of [key, value]
 ```
 
+## Example: Using extract()
+
+The extract(index) method allows you to remove and return an element at a specific position in the queue, immediately clearing its timeout. This is useful when you want to remove an item before its TTL expires, without triggering the onExpire callback (for example, when you want to process and discard an item manually).
+
+```js
+const arr = new TTLMapArray({
+  ttl: 1000,
+  onExpire: (v, k) => console.log("expired", k)
+});
+arr.push("a");
+arr.push("b");
+arr.push("c");
+
+const value = arr.extract(1); // Removes "b" from the queue
+console.log(value); // "b"
+console.log(arr.values()); // ["a", "c"]
+// The onExpire callback will NOT be called for "b"
+```
+
 ## API Reference
 
-| Method/Property            | Description                                                                            |
-| -------------------------- | -------------------------------------------------------------------------------------- |
-| `push(value, options)`     | Adds a value with optional TTL, returns generated key.                                 |
-| `set(key, value, options)` | Sets a value for a key with optional TTL and onExpire callback.                        |
-| `get(key)`                 | Retrieves the value for a given key, or `null` if not found.                           |
-| `shift()`                  | Removes and returns the first value (FIFO).                                            |
-| `pop()`                    | Removes and returns the last value (LIFO).                                             |
-| `delete(key)`              | Removes the item with the given key.                                                   |
-| `has(key)`                 | Returns `true` if the key exists, otherwise `false`.                                   |
-| `at(index)`                | Returns the value at the given index, or `null` if out of bounds.                      |
-| `forEach(cb)`              | Iterates over all items, calling `cb(value, key, queue)` for each.                     |
-| `map(cb)`                  | Returns a new array with the results of calling `cb(value, key, queue)` on every item. |
-| `values()`                 | Returns an array of all values.                                                        |
-| `keys()`                   | Returns an array of all keys.                                                          |
-| `entries()`                | Returns an array of `[key, value]` pairs.                                              |
-| `clear()`                  | Removes all items and clears all timeouts.                                             |
-| `isEmpty()`                | Returns `true` if the collection is empty.                                             |
-| `size()`                   | Returns the number of items in the collection.                                         |
-| `first()`                  | Returns the first value, or `null` if empty.                                           |
-| `last()`                   | Returns the last value, or `null` if empty.                                            |
-| `next()`                   | Alias for `first()`.                                                                   |
-| `length`                   | Number of elements (like Array).                                                       |
-| `size`                     | Number of elements (like Map).                                                         |
-| `concat(...arrays)`        | Returns a new TTLMapArray by concatenating other arrays/maps.                          |
-| `slice(start, end)`        | Returns a partial copy as a new TTLMapArray.                                           |
-| `includes(value)`          | Checks if a value is present.                                                          |
-| `indexOf(value)`           | Returns the index of the value, or -1 if not found.                                    |
-| `find(cb)`                 | Returns the first value that satisfies the callback.                                   |
-| `findIndex(cb)`            | Returns the index of the first value that satisfies the callback.                      |
-| `some(cb)`                 | Returns true if at least one value satisfies the callback.                             |
-| `every(cb)`                | Returns true if all values satisfy the callback.                                       |
-| `filter(cb)`               | Returns a new filtered TTLMapArray.                                                    |
-| `reduce(cb, init)`         | Reduces the values to a single result.                                                 |
-| `toString()`               | Returns a string representation of the structure.                                      |
-| `toLocaleString()`         | As above, but localized.                                                               |
-| `[Symbol.iterator]`        | Allows iteration with for...of and spread operator.                                    |
+| Method/Property            | Description                                                                                     |
+| -------------------------- | ----------------------------------------------------------------------------------------------- |
+| `push(value, options)`     | Adds a value with optional TTL, returns generated key.                                          |
+| `set(key, value, options)` | Sets a value for a key with optional TTL and onExpire callback.                                 |
+| `get(key)`                 | Retrieves the value for a given key, or `null` if not found.                                    |
+| `shift()`                  | Removes and returns the first value (FIFO).                                                     |
+| `pop()`                    | Removes and returns the last value (LIFO).                                                      |
+| `delete(key)`              | Removes the item with the given key.                                                            |
+| `has(key)`                 | Returns `true` if the key exists, otherwise `false`.                                            |
+| `at(index)`                | Returns the value at the given index, or `null` if out of bounds.                               |
+| `forEach(cb)`              | Iterates over all items, calling `cb(value, key, queue)` for each.                              |
+| `map(cb)`                  | Returns a new array with the results of calling `cb(value, key, queue)` on every item.          |
+| `values()`                 | Returns an array of all values.                                                                 |
+| `keys()`                   | Returns an array of all keys.                                                                   |
+| `entries()`                | Returns an array of `[key, value]` pairs.                                                       |
+| `clear()`                  | Removes all items and clears all timeouts.                                                      |
+| `isEmpty()`                | Returns `true` if the collection is empty.                                                      |
+| `size()`                   | Returns the number of items in the collection.                                                  |
+| `first()`                  | Returns the first value, or `null` if empty.                                                    |
+| `last()`                   | Returns the last value, or `null` if empty.                                                     |
+| `next()`                   | Alias for `first()`.                                                                            |
+| `length`                   | Number of elements (like Array).                                                                |
+| `size`                     | Number of elements (like Map).                                                                  |
+| `concat(...arrays)`        | Returns a new TTLMapArray by concatenating other arrays/maps.                                   |
+| `slice(start, end)`        | Returns a partial copy as a new TTLMapArray.                                                    |
+| `includes(value)`          | Checks if a value is present.                                                                   |
+| `indexOf(value)`           | Returns the index of the value, or -1 if not found.                                             |
+| `find(cb)`                 | Returns the first value that satisfies the callback.                                            |
+| `findIndex(cb)`            | Returns the index of the first value that satisfies the callback.                               |
+| `some(cb)`                 | Returns true if at least one value satisfies the callback.                                      |
+| `every(cb)`                | Returns true if all values satisfy the callback.                                                |
+| `filter(cb)`               | Returns a new filtered TTLMapArray.                                                             |
+| `reduce(cb, init)`         | Reduces the values to a single result.                                                          |
+| `toString()`               | Returns a string representation of the structure.                                               |
+| `toLocaleString()`         | As above, but localized.                                                                        |
+| `[Symbol.iterator]`        | Allows iteration with for...of and spread operator.                                             |
+| `extract(index)`           | Removes and returns the value at the given index, clearing its timeout. Does not call onExpire. |
 
 ## License
 

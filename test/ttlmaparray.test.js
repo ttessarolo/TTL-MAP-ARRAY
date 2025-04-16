@@ -291,4 +291,31 @@ describe("TTLMapArray", function () {
     // Should not call global for b
     expect(globalExpired.find((e) => e.key === kB)).to.be.undefined;
   });
+
+  it("should extract and return the value at the given index, removing it from the queue and clearing the timeout", function (done) {
+    const arr = new TTLMapArray({});
+    arr.push("a");
+    arr.push("b", {
+      ttl: 50,
+      onExpire: () => done(new Error("Should not expire"))
+    });
+    arr.push("c");
+    expect(arr.length).to.equal(3);
+    const value = arr.extract(1);
+    expect(value).to.equal("b");
+    expect(arr.length).to.equal(2);
+    expect(arr.values()).to.deep.equal(["a", "c"]);
+    setTimeout(() => {
+      // onExpire should NOT be called for the extracted element
+      done();
+    }, 70);
+  });
+
+  it("should return null if index is out of bounds or invalid", function () {
+    const arr = new TTLMapArray();
+    arr.push("x");
+    expect(arr.extract(-1)).to.be.null;
+    expect(arr.extract(5)).to.be.null;
+    expect(arr.extract("foo")).to.be.null;
+  });
 });
