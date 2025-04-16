@@ -247,4 +247,48 @@ describe("TTLMapArray", function () {
       done();
     }, 70);
   });
+
+  it("should clear the queue and timeouts on abort signal", function () {
+    const controller = new AbortController();
+    let expired = false;
+    const arr = new TTLMapArray({
+      ttl: 100,
+      signal: controller.signal,
+      onExpire: () => {
+        expired = true;
+      }
+    });
+    arr.push("a");
+    arr.push("b");
+    expect(arr.length).to.equal(2);
+    controller.abort();
+    expect(arr.length).to.equal(0);
+    // Now expired should be true, because abort calls onExpire
+    expect(expired).to.be.true;
+  });
+
+  it("should call all onExpire callbacks (item and global) on abort", function () {
+    let globalExpired = [];
+    let itemExpired = [];
+    const controller = new AbortController();
+    const arr = new TTLMapArray({
+      ttl: 1000,
+      signal: controller.signal,
+      onExpire: (value, key) => {
+        globalExpired.push({ value, key });
+      }
+    });
+    const kA = arr.push("a");
+    const kB = arr.push("b", {
+      onExpire: (value, key) => itemExpired.push({ value, key })
+    });
+    const kC = arr.push("c");
+    controller.abort();
+    // Should call global for a and c, item for b
+    expect(globalExpired).to.deep.include({ value: "a", key: kA });
+    expect(globalExpired).to.deep.include({ value: "c", key: kC });
+    expect(itemExpired).to.deep.include({ value: "b", key: kB });
+    // Should not call global for b
+    expect(globalExpired.find((e) => e.key === kB)).to.be.undefined;
+  });
 });

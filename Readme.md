@@ -9,6 +9,7 @@
 - Per-item or global TTL (Time-To-Live) expiration
 - Optional expiration callback (`onExpire`)
 - Utility methods for iteration, mapping, and more
+- AbortSignal support for clearing all items and cancelling timeouts
 
 ## Installation & Import
 
@@ -92,6 +93,31 @@ arr.set("foo", "bar");
 // After 1 second, the callback will log for both items:
 // Global expire: key='0', value='apple'
 // Global expire: key='foo', value='bar'
+```
+
+## AbortSignal Support
+
+TTLMapArray supports the AbortSignal API. You can pass a signal option to the constructor. When the signal is aborted, the queue is cleared and all timeouts are cancelled immediately. **When aborted, the library will also call all onExpire callbacks for each item—either the item-specific onExpire or the global one if present.** This is useful for resource cleanup or when you want to abort all pending TTL expirations at once.
+
+### Example: Using AbortSignal
+
+```js
+const controller = new AbortController();
+const arr = new TTLMapArray({
+  ttl: 1000,
+  signal: controller.signal,
+  onExpire: (value, key) => {
+    console.log(`Expired: ${key} = ${value}`);
+  }
+});
+
+arr.push("a");
+arr.push("b");
+console.log(arr.length); // 2
+
+// Abort and clear all items before TTL expires
+controller.abort();
+console.log(arr.length); // 0
 ```
 
 ## Array-like Get and Set with [index]

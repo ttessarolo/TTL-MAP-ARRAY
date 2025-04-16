@@ -8,10 +8,29 @@ function randomUUID() {
 
 // Acts as Array or Map with TTL
 class TTLMapArray {
-  constructor({ ttl, onExpire }) {
+  // Private abort method: clears queue and calls onExpire for each item
+  #abort() {
+    this.queue.forEach((q) => {
+      clearTimeout(q.timeout);
+      // Call only the item-specific onExpire if present, otherwise the global one
+      if (q.onExpire) {
+        q.onExpire(q.value, q.key);
+      } else if (this.onExpire) {
+        this.onExpire(q.value, q.key);
+      }
+    });
+    this.queue = [];
+  }
+
+  constructor({ ttl, onExpire, signal } = {}) {
     this.queue = [];
     this.ttl = ttl;
     this.onExpire = onExpire;
+    if (signal) {
+      signal.addEventListener("abort", () => {
+        this.#abort();
+      });
+    }
   }
 
   push(value, options = {}) {
@@ -33,7 +52,7 @@ class TTLMapArray {
         this.delete(key);
       }, ttl || this.ttl);
     }
-    this.queue.push({ key, value, timeout });
+    this.queue.push({ key, value, timeout, onExpire });
   }
 
   get(key) {
