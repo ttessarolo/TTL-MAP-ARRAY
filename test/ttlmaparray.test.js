@@ -318,4 +318,16 @@ describe("TTLMapArray", function () {
     expect(arr.extract(5)).to.be.null;
     expect(arr.extract("foo")).to.be.null;
   });
+
+  it("should extract an element by key with extractKey", function () {
+    const arr = new TTLMapArray({});
+    const key1 = arr.push("val1");
+    const key2 = arr.push("val2");
+    const extracted = arr.extractKey(key1);
+    expect(extracted).to.equal("val1");
+    expect(arr.get(key1)).to.be.null;
+    expect(arr.get(key2)).to.equal("val2");
+    // Se la chiave non esiste, deve restituire null
+    expect(arr.extractKey("nonexistent")).to.be.null;
+  });
 });

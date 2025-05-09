@@ -219,6 +219,25 @@ console.log(arr.values()); // ["a", "c"]
 // The onExpire callback will NOT be called for "b"
 ```
 
+## Example: Using extractKey()
+
+The `extractKey(key)` method allows you to remove and return an element with a specific key from the queue, immediately clearing its timeout. This is useful when you want to remove an item by key before its TTL expires, without triggering the onExpire callback (for example, when you want to process and discard an item manually).
+
+```js
+const arr = new TTLMapArray({
+  ttl: 1000,
+  onExpire: (v, k) => console.log("expired", k)
+});
+const keyA = arr.push("a");
+const keyB = arr.push("b");
+const keyC = arr.push("c");
+
+const value = arr.extractKey(keyB); // Removes "b" from the queue
+console.log(value); // "b"
+console.log(arr.values()); // ["a", "c"]
+// The onExpire callback will NOT be called for "b"
+```
+
 ## API Reference
 
 | Method/Property            | Description                                                                                     |
@@ -258,6 +277,7 @@ console.log(arr.values()); // ["a", "c"]
 | `toLocaleString()`         | As above, but localized.                                                                        |
 | `[Symbol.iterator]`        | Allows iteration with for...of and spread operator.                                             |
 | `extract(index)`           | Removes and returns the value at the given index, clearing its timeout. Does not call onExpire. |
+| `extractKey(key)`          | Removes and returns the value with the given key, clearing its timeout. Does not call onExpire. |
 
 ## License
 
