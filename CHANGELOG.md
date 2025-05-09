@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.1.1%0Dv1.2.0) (2025-05-09)
+
+
+### Features
+
+* new API extractKey ([49b66ab](https://github.com/ttessarolo/ttl-map-array/commits/49b66abd2e3cd3ed54878a1b1030987af591068e))
+
 ### [1.1.1](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.1.0%0Dv1.1.1) (2025-04-16)
 
 
