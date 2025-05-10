@@ -279,6 +279,21 @@ console.log(arr.values()); // ["a", "c"]
 | `extract(index)`           | Removes and returns the value at the given index, clearing its timeout. Does not call onExpire. |
 | `extractKey(key)`          | Removes and returns the value with the given key, clearing its timeout. Does not call onExpire. |
 
+## Additional Exports: TTLArray and TTLMap
+
+In addition to the default export (`TTLMapArray`), the library also provides two named exports: `{ TTLArray, TTLMap }`.
+
+```js
+import TTLMapArray, { TTLArray, TTLMap } from "@ttessarolo/ttl-map-array";
+```
+
+These two classes are optimized versions for those who want to use only the standard JavaScript `Array` or `Map` APIs, but with automatic expiration (TTL) support for each element or key.
+
+- **TTLArray**: Implements the main methods of a JavaScript array, adding the ability to assign a TTL to each element. Expired elements are automatically removed, and you can optionally specify a callback to be executed on expiration.
+- **TTLMap**: Implements the main methods of a JavaScript map, with TTL for each key. You can also specify an expiration callback for each entry.
+
+These classes are recommended if you want maximum efficiency and simplicity, without the overhead of dual API compatibility (Array+Map) provided by `TTLMapArray`.
+
 ## License
 
 MIT License
@@ -288,9 +303,7 @@ Copyright (c) 2025 Tommaso Tessarolo
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.

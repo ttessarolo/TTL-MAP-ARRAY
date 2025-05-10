@@ -1,6 +1,6 @@
 // Test per TTLMapArray
 import { expect } from "chai";
-import TTLMapArray from "../index.js";
+import TTLMapArray from "../lib/ttlmaparray.js";
 
 describe("TTLMapArray", function () {
   it("should add and retrieve an element with push/get", function () {
@@ -329,5 +329,33 @@ describe("TTLMapArray", function () {
     expect(arr.get(key2)).to.equal("val2");
     // Se la chiave non esiste, deve restituire null
     expect(arr.extractKey("nonexistent")).to.be.null;
+  });
+
+  it("should allow chaining of set like Map", function () {
+    const arr = new TTLMapArray();
+    arr.set("a", 1).set("b", 2);
+    expect(arr.get("a")).to.equal(1);
+    expect(arr.get("b")).to.equal(2);
+  });
+
+  it("delete should return true if key existed, false otherwise", function () {
+    const arr = new TTLMapArray();
+    arr.set("a", 1);
+    expect(arr.delete("a")).to.be.true;
+    expect(arr.delete("a")).to.be.false;
+  });
+
+  it("clear should return undefined (like Map)", function () {
+    const arr = new TTLMapArray();
+    arr.set("a", 1);
+    const result = arr.clear();
+    expect(result).to.be.undefined;
+    expect(arr.size).to.equal(0);
+  });
+
+  it("set should return this (like Map)", function () {
+    const arr = new TTLMapArray();
+    const result = arr.set("a", 1);
+    expect(result).to.equal(arr);
   });
 });
