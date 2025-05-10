@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.2.0%0Dv1.3.0) (2025-05-10)
+
+
+### Features
+
+* added TTLArray, TTLMap classes + TTLArrayMap map optimization ([a84e7d7](https://github.com/ttessarolo/ttl-map-array/commits/a84e7d7af91d14dfa6ac346f44936a2601b6fa12))
+
 ## [1.2.0](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.1.1%0Dv1.2.0) (2025-05-09)
 
 
