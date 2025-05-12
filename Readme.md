@@ -2,6 +2,8 @@
 
 `TTLMapArray` is a JavaScript class that combines the features of both an Array and a Map, with built-in support for Time-To-Live (TTL) expiration of items. Each item can have an optional TTL after which it is automatically removed from the collection, and an optional callback can be triggered on expiration.
 
+> **Note:** This library works only on Node.js because it uses `setTimeout().unref()`, a feature not available in browsers.
+
 ## Features
 
 - Use as an Array (FIFO/LIFO operations, index access, iteration)
