@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.3.0%0Dv1.4.0) (2025-05-12)
+
+
+### Features
+
+* setTimeout().unref() ([e3ab3d1](https://github.com/ttessarolo/ttl-map-array/commits/e3ab3d17ef30f3de725f21a11dd036941dc617b5))
+
 ## [1.3.0](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.2.0%0Dv1.3.0) (2025-05-10)
 
 
