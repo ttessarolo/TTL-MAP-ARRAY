@@ -2,12 +2,25 @@
   "name": "@ttessarolo/ttl-map-array",
   "version": "1.4.0",
   "main": "index.js",
+  "types": "index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./index.js",
-    "./ttlarray": "./lib/ttlarray.js",
-    "./ttlmap": "./lib/ttlmap.js",
-    "./ttlmaparray": "./lib/ttlmaparray.js"
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./ttlarray": {
+      "types": "./lib/ttlarray.d.ts",
+      "default": "./lib/ttlarray.js"
+    },
+    "./ttlmap": {
+      "types": "./lib/ttlmap.d.ts",
+      "default": "./lib/ttlmap.js"
+    },
+    "./ttlmaparray": {
+      "types": "./lib/ttlmaparray.d.ts",
+      "default": "./lib/ttlmaparray.js"
+    }
   },
   "scripts": {
     "test": "mocha --timeout 5000",
