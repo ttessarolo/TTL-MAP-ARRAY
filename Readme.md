@@ -296,6 +296,53 @@ These two classes are optimized versions for those who want to use only the stan
 
 These classes are recommended if you want maximum efficiency and simplicity, without the overhead of dual API compatibility (Array+Map) provided by `TTLMapArray`.
 
+## Sweep-Based TTL Expiration
+
+Starting from **v1.4.1**, TTL expiration is handled by a single **SweepScheduler** instead of creating one `setTimeout` per item.
+
+### The problem
+
+The previous approach created a dedicated `setTimeout` for every item inserted with a TTL. Under high-throughput workloads (tens of thousands of items with similar TTLs), this caused:
+
+- **Massive timer handle accumulation** — each item held its own OS timer resource.
+- **Event Loop Utilization (ELU) spikes** — when thousands of timers fired at roughly the same moment, the event loop was blocked processing callbacks one by one, starving other I/O.
+- **Increased GC pressure** — each timer closure retained references to its item, delaying garbage collection.
+
+### How SweepScheduler works
+
+`SweepScheduler` replaces all per-item timers with a **single timer** that fires at the earliest expiration time. When it fires it:
+
+1. Scans all items in one pass, removing every expired entry and invoking its `onExpire` callback.
+2. Finds the next earliest `expiresAt` among the surviving items.
+3. Re-schedules itself for that timestamp (or stops if nothing remains).
+
+If a newly inserted item expires sooner than the current scheduled time, the timer is rescheduled immediately — so expiration accuracy is preserved.
+
+### Benefits
+
+| Aspect | Before (per-item `setTimeout`) | After (SweepScheduler) |
+|---|---|---|
+| Timer handles for *N* items | *N* | **1** |
+| ELU during mass expiration | High spikes | **< 10%** |
+| `process.getActiveResourcesInfo()` growth | Linear with *N* | **Constant** |
+| Expiration accuracy | Exact per-item | Same (re-schedules on earlier insert) |
+
+### ELU test results
+
+The test suite includes a dedicated ELU benchmark (`test/elu-spike.test.js`) that inserts **50 000 items** with a 500 ms TTL and measures event-loop utilization during mass expiration. Results on a single run:
+
+| Class | ELU during 50k expirations | New timer resources |
+|---|---|---|
+| TTLMapArray | ~3.2% | 0 |
+| TTLMap | ~2.2% | 0 |
+| TTLArray | ~2.4% | 0 |
+
+All values stay well below the 10% threshold, confirming that the sweep approach keeps the event loop healthy even under heavy load.
+
+### Credits
+
+Thanks to [Marco Piraccini](https://github.com/marcopiraccini) for designing and contributing the sweep-based expiration model.
+
 ## License
 
 MIT License

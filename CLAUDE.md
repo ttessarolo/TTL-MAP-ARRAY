@@ -1,20 +1,38 @@
-[byterover-mcp]
+# CLAUDE.md
 
-[byterover-mcp]
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-You are given two tools from Byterover MCP server, including
-## 1. `byterover-store-knowledge`
-You `MUST` always use this tool when:
+## Commands
 
-+ Learning new patterns, APIs, or architectural decisions from the codebase
-+ Encountering error solutions or debugging techniques
-+ Finding reusable code patterns or utility functions
-+ Completing any significant task or plan implementation
+- **Run all tests:** `npm test` (mocha with 5s timeout)
+- **Run a single test file:** `npx mocha --timeout 5000 test/<filename>.test.js`
+- **Release:** `npm run release` (runs tests, commitizen commit, standard-version bump, push, publish)
 
-## 2. `byterover-retrieve-knowledge`
-You `MUST` always use this tool when:
+## Architecture
 
-+ Starting any new task or implementation to gather relevant context
-+ Before making architectural decisions to understand existing patterns
-+ When debugging issues to check for previous solutions
-+ Working with unfamiliar parts of the codebase
+This is an ESM-only Node.js library (`"type": "module"`) providing TTL-expiring data structures. Three classes, one entry point:
+
+- `index.js` — re-exports all three classes. Default export is `TTLMapArray`, named exports are `TTLArray` and `TTLMap`.
+- `lib/ttlmaparray.js` — hybrid Array+Map with TTL. Internally uses a `queue` array (ordered items) paired with a `_map` Map (O(1) key lookup). Exported as a Proxy factory (`createTTLMapArrayProxy`) to support `arr[0]` numeric indexing.
+- `lib/ttlarray.js` — pure Array-like with TTL. Also Proxy-wrapped for numeric indexing.
+- `lib/ttlmap.js` — pure Map-like with TTL. No Proxy needed (no numeric indexing).
+- `lib/utils.js` — shared `randomUUID()` and `SweepScheduler`.
+
+### TTL Expiration Model
+
+Expiration uses a **single sweep timer** (not per-item `setTimeout`), implemented in `SweepScheduler`. The scheduler fires at the earliest `expiresAt` timestamp, removes all expired items in one pass via `_doSweep()`, then reschedules for the next expiry. All timers use `.unref()` so they don't keep the process alive.
+
+### Key Patterns
+
+- Each item stores `{ key, value, expiresAt, onExpire }`. Items without TTL have `expiresAt: null` and never expire.
+- `TTLMapArray.set()` updates in-place if the key already exists (finds by index in queue).
+- `extract()`/`extractKey()` remove items **without** calling `onExpire`. `delete()`/`shift()`/`pop()` also skip `onExpire`. Only sweep expiration and abort trigger callbacks.
+- AbortSignal support: constructor accepts `{ signal }`, abort calls all `onExpire` callbacks then clears.
+
+## Conventions
+
+- Uses commitizen with `cz-conventional-changelog` for commit messages.
+- Versioning via `standard-version`.
+- Tests use mocha + chai (ESM imports). Test files are in `test/`.
+- Code comments are in Italian.
+- No build step — source JS files are the published artifacts. TypeScript `.d.ts` files are hand-maintained.
