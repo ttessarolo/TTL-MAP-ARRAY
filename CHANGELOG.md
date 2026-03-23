@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.4.1%0Dv1.5.0) (2026-03-23)
+
+
+### Features
+
+* new SweepScheduler -> TTL Handling ([7d41c48](https://github.com/ttessarolo/ttl-map-array/commits/7d41c4848a2d8991b05b10dacb7145e4ea510978))
+
 ### [1.4.1](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.4.0%0Dv1.4.1) (2025-10-03)
 
 
