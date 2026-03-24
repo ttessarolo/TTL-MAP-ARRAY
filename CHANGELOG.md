@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.2](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.5.1%0Dv1.5.2) (2026-03-24)
+
+
+### Bug Fixes
+
+* fix: O(1) in-place set for existing keys and zero-alloc sweep ([0acffb1](https://github.com/ttessarolo/ttl-map-array/commits/0acffb1dd4805a1bd6e48d77b635cc8bc8a3e177))
+* O(1) in-place set for existing keys and zero-alloc sweep ([0dab8cb](https://github.com/ttessarolo/ttl-map-array/commits/0dab8cbb44610f0a3e0f3027a84c5e15c4c59afb))
+
 ### [1.5.1](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.5.0%0Dv1.5.1) (2026-03-24)
 
 
