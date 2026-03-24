@@ -29,9 +29,9 @@
     "push": "git push --follow-tags",
     "release": "npm run test && npm run commit && npm run version && npm run push && npm publish"
   },
-  "author": "",
+  "author": "ttessarolo",
   "license": "ISC",
-  "description": "",
+  "description": "TTL-expiring Array and Map data structures",
   "publishConfig": {
     "access": "public"
   },
