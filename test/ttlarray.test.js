@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { expect } from "chai";
 import TTLArray from "../lib/ttlarray.js";
 
