@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.1](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.5.0%0Dv1.5.1) (2026-03-24)
+
+
+### Bug Fixes
+
+* native UUID ([f9a89bf](https://github.com/ttessarolo/ttl-map-array/commits/f9a89bf6279acb26c91efcbc1cbd3acdc4434908))
+
+
+### Code Refactoring
+
+* use node crypto randomUUID ([5b77973](https://github.com/ttessarolo/ttl-map-array/commits/5b779737c9b8227c9035e56cd5346362916f5a2e))
+
 ## [1.5.0](https://bitbucket.org/ttessarolo/ttl-map-array/branches/compare/v1.4.1%0Dv1.5.0) (2026-03-23)
 
 
